@@ -6,43 +6,47 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
+use App\Models\Admin\SubCategory;
 use DB;
 
-class CategoryController extends Controller
+class SubCategoryController extends Controller
 {
-
     public function __construct() {
         $this->middleware('auth:admin');
     }
 
-    public function CategoryView() {
-        $categories = Category::all();
-        return view('admin.category.category', compact('categories'));
+    public function SubCategoryView() {
+        $categories = Category::orderBy('category_name','ASC')->get();
+        $subcategories = SubCategory::latest()->get();
+        return view('admin.subcategory.subcategory_view', compact('subcategories', 'categories'));
     }
 
-    public function StoreCategory(Request $request) {
+    public function StoreSubCategory(Request $request) {
         $validatedData = $request->validate([
-            'category_name' => 'required|unique:categories|max:255',
+            'subcategory_name' => 'required',
+            'category_id' => 'required',
         ]);
 
-        Category::insert([
-            'category_name' => $request->category_name,
+        SubCategory::insert([
+            'category_id' => $request->category_id,
+            'subcategory_name' => $request->subcategory_name,
             'created_at' => Carbon::now()
         ]);
 
         $notification = array(
-			'message' => 'Category Inserted Successfully',
+			'message' => 'Sub Category Inserted Successfully',
 			'alert-type' => 'success'
 		);
 
         return redirect()->back()->with($notification);
+
     }
 
-    public function CategoryDelete($id) {
+    public function SubCategoryDelete($id) {
         if (isset($id)) {
-            Category::findOrFail($id)->delete();
+            SubCategory::findOrFail($id)->delete();
             $notification = array(
-                'message' => 'Category Deleted Successfully',
+                'message' => 'Sub Category Deleted Successfully',
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($notification);
@@ -55,10 +59,11 @@ class CategoryController extends Controller
         }
     }
 
-    public function CategoryEdit($id) {
+    public function SubCategoryEdit($id) {
         if (isset($id)) {
-            $category = Category::findOrFail($id);
-            return view('admin.category.edit', compact('category'));
+            $categories = Category::orderBy('category_name','ASC')->get();
+            $subcategory = SubCategory::findOrFail($id);
+            return view('admin.subcategory.subcategory_edit',  compact('subcategory', 'categories'));
         } else {
             $notification = array(
                 'message' => 'Missing Required Parameter',
@@ -68,10 +73,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function CategoryUpdate(Request $request, $id) {
-        $validateData = $request->validate([
-            'category_name' => 'required|max:255',
-        ]);
+    public function SubCategoryUpdate(Request $request, $id) {
         // $category = Category::findOrFail($id);
         // $update = $category->update([
         //     'category_name' => $request->category_name,
@@ -79,22 +81,24 @@ class CategoryController extends Controller
         // ]);
 
         // Dùng cách thứ 2 để có thể biết được nếu người dùng không nhập gì khi update
-        $category = [];
-        $category['category_name'] = $request->category_name;
-        $update = DB::table('categories')->where('id', $id)->update($category);
+        $subcategory = [];
+        $subcategory['category_id'] = $request->category_id;
+        $subcategory['subcategory_name'] = $request->subcategory_name;
+        $update = DB::table('sub_categories')->where('id', $id)->update($subcategory);
 
         if ($update) {
             $notification = array(
-                'message' => 'Category Updated Successfully',
+                'message' => 'Sub Category Updated Successfully',
                 'alert-type' => 'success'
             );
-            return redirect()->route('categories')->with($notification);
+            return redirect()->route('sub.category')->with($notification);
         } else {
             $notification = array(
                 'message' => 'Nothing To Update',
                 'alert-type' => 'error'
             );
-            return redirect()->route('categories')->with($notification);
+            return redirect()->route('sub.category')->with($notification);
         }
     }
 }
+

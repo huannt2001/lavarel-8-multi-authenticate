@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Backend\Category\CategoryController;
+use App\Http\Controllers\Backend\Category\BrandController;
+use App\Http\Controllers\Backend\Category\SubCategoryController;
+use App\Http\Controllers\Backend\Category\CouponController;
+use App\Http\Controllers\Frontend\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +30,7 @@ Route::middleware(['auth:sanctum,admin', config('jetstream.auth_session'), 'veri
     Route::get('admin/dashboard', function () {
         return view('admin.home');
     })->name('dashboard');
+    
 });
 
 Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
@@ -49,3 +55,49 @@ Route::middleware(['auth:sanctum,web', config('jetstream.auth_session'), 'verifi
 
 
 Route::get('/', [IndexController::class, 'index']);
+
+// Admin Category  All Routes
+Route::prefix('category')->group(function () {
+    Route::get('/view', [CategoryController::class, 'CategoryView'])->name('categories');
+    Route::post('/store', [CategoryController::class, 'StoreCategory'])->name('store.category');
+    Route::get('/delete/{id}', [CategoryController::class, 'CategoryDelete'])->name('category.delete');
+    Route::get('/edit/{id}', [CategoryController::class, 'CategoryEdit'])->name('category.edit');
+    Route::post('/update/{id}', [CategoryController::class, 'CategoryUpdate'])->name('category.update');
+    
+    
+    // Admin SubCategory  All Routes
+    Route::get('/sub/view', [SubCategoryController::class, 'SubCategoryView'])->name('sub.category');
+    Route::post('/sub/store', [SubCategoryController::class, 'StoreSubCategory'])->name('store.subcategory');
+    Route::get('/sub/delete/{id}', [SubCategoryController::class, 'SubCategoryDelete'])->name('subcategory.delete');
+    Route::get('/sub/edit/{id}', [SubCategoryController::class, 'SubCategoryEdit'])->name('subcategory.edit');
+    Route::post('/sub/update/{id}', [SubCategoryController::class, 'SubCategoryUpdate'])->name('subcategory.update');
+});
+
+
+// Admin Brand  All Routes
+Route::prefix('brand')->group(function () {
+    Route::get('/view', [BrandController::class, 'BrandView'])->name('all.brand');
+    Route::post('/store', [BrandController::class, 'StoreBrand'])->name('store.brand');
+    Route::get('/delete/{id}', [BrandController::class, 'BrandDelete'])->name('brand.delete');
+    Route::get('/edit/{id}', [BrandController::class, 'BrandEdit'])->name('brand.edit');
+    Route::post('/update/{id}', [BrandController::class, 'BrandUpdate'])->name('brand.update');
+});
+
+// Admin Coupon  All Routes
+Route::prefix('coupon')->group(function () {
+    Route::get('/view', [CouponController::class, 'CouponView'])->name('all.coupon');
+    Route::post('/store', [CouponController::class, 'StoreCoupon'])->name('store.coupon');
+    Route::get('/delete/{id}', [CouponController::class, 'DeleteCoupon'])->name('coupon.delete');
+    Route::get('/edit/{id}', [CouponController::class, 'EditCoupon'])->name('coupon.edit');
+    Route::post('/update/{id}', [CouponController::class, 'UpdateCoupon'])->name('coupon.update');
+});
+
+// Admin Newslater  All Routes
+Route::prefix('newslater')->group(function () {
+    Route::get('/view', [CouponController::class, 'NewslaterView'])->name('all.newslater');
+    Route::get('/delete/{id}', [CouponController::class, 'DeleteNewslater'])->name('newslater.delete');
+
+    // Frontent Newslater All Routes
+    Route::post('/store', [HomeController::class, 'StoreNewslater'])->name('store.newslater');
+});
+

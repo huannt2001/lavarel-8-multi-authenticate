@@ -1,62 +1,56 @@
-{{-- <x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="en">
 
-        <x-jet-validation-errors class="mb-4" />
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
+    <!-- Twitter -->
+    <meta name="twitter:site" content="@themepixels">
+    <meta name="twitter:creator" content="@themepixels">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Starlight">
+    <meta name="twitter:description" content="Premium Quality and Responsive UI for Dashboard.">
+    <meta name="twitter:image" content="http://themepixels.me/starlight/img/starlight-social.png">
 
-        <form method="POST" action="{{ isset($guard) ? url($guard . '/login') : route('login') }}">
-            @csrf
+    <!-- Facebook -->
+    <meta property="og:url" content="http://themepixels.me/starlight">
+    <meta property="og:title" content="Starlight">
+    <meta property="og:description" content="Premium Quality and Responsive UI for Dashboard.">
 
-            <div>
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                    autofocus />
-            </div>
+    <meta property="og:image" content="http://themepixels.me/starlight/img/starlight-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/starlight/img/starlight-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
 
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                    autocomplete="current-password" />
-            </div>
+    <!-- Meta -->
+    <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
+    <meta name="author" content="ThemePixels">
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-jet-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
+    <title>Ecommerce Admin Panel</title>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900"
-                        href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
+    <!-- vendor css -->
+    <link href="{{ asset('backend/lib/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/lib/Ionicons/css/ionicons.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/lib/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/lib/rickshaw/rickshaw.min.css') }}" rel="stylesheet">
 
-                <x-jet-button class="ml-4">
-                    {{ __('Log in') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout> --}}
+    <!-- Starlight CSS -->
+    <link rel="stylesheet" href="{{ asset('backend/css/starlight.css') }}">
 
+    {{-- Toaster --}}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
-@extends('admin.admin_master')
-@section('admin_content')
+</head>
+
+<body>
     <div class="d-flex align-items-center justify-content-center bg-sl-primary ht-100v">
 
         <div class="login-wrapper wd-300 wd-xs-350 pd-25 pd-xs-40 bg-white">
-            <div class="signin-logo tx-center tx-24 tx-bold tx-inverse">starlight <span class="tx-info tx-normal">admin</span>
+            <div class="signin-logo tx-center tx-24 tx-bold tx-inverse">starlight <span
+                    class="tx-info tx-normal">admin</span>
             </div>
             <div class="tx-center mg-b-60">Professional Admin Template Design</div>
 
@@ -79,7 +73,9 @@
                         </span>
                     @enderror
                     <a href="{{ route('admin.change.password') }}" class="tx-info tx-12 d-block mg-t-10">Forgot
-                        password?</a>
+                        password?</a> <br>
+                    <a href="{{ route('admin.login') }}" class="tx-info tx-12 d-block">Login with
+                        administrator</a>
                 </div><!-- form-group -->
                 <button type="submit" class="btn btn-info btn-block">Sign In</button>
             </form>
@@ -87,4 +83,46 @@
 
         </div><!-- login-wrapper -->
     </div><!-- d-flex -->
-@endsection
+
+
+    <script src="{{ asset('backend/lib/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('backend/lib/popper.js/popper.js') }}"></script>
+    <script src="{{ asset('backend/lib/bootstrap/bootstrap.js') }}"></script>
+    <script src="{{ asset('backend/lib/jquery-ui/jquery-ui.js') }}"></script>
+    <script src="{{ asset('backend/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js') }}"></script>
+    <script src="{{ asset('backend/lib/jquery.sparkline.bower/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('backend/lib/d3/d3.js') }}"></script>
+    <script src="{{ asset('backend/lib/rickshaw/rickshaw.min.js') }}"></script>
+    <script src="{{ asset('backend/lib/chart.js/Chart.js') }}"></script>
+    <script src="{{ asset('backend/lib/Flot/jquery.flot.js') }}"></script>
+    <script src="{{ asset('backend/lib/Flot/jquery.flot.pie.js') }}"></script>
+    <script src="{{ asset('backend/lib/Flot/jquery.flot.resize.js') }}"></script>
+    <script src="{{ asset('backend/lib/flot-spline/jquery.flot.spline.js') }}"></script>
+
+    <script src="{{ asset('backend/js/starlight.js') }}"></script>
+    <script src="{{ asset('backend/js/ResizeSensor.js') }}"></script>
+    <script src="{{ asset('backend/js/dashboard.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+                case 'info':
+                    toastr.info('{{ Session::get('message') }}');
+                    break;
+                case 'success':
+                    toastr.success('{{ Session::get('message') }}');
+                    break;
+                case 'warning':
+                    toastr.warning('{{ Session::get('message') }}');
+                    break;
+                case 'error':
+                    toastr.error('{{ Session::get('message') }}');
+                    break;
+            }
+        @endif
+    </script>
+</body>
+
+</html>
