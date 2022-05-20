@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Category\CategoryController;
 use App\Http\Controllers\Backend\Category\BrandController;
 use App\Http\Controllers\Backend\Category\SubCategoryController;
 use App\Http\Controllers\Backend\Category\CouponController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Frontend\HomeController;
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,7 @@ Route::prefix('category')->group(function () {
     Route::get('/sub/delete/{id}', [SubCategoryController::class, 'SubCategoryDelete'])->name('subcategory.delete');
     Route::get('/sub/edit/{id}', [SubCategoryController::class, 'SubCategoryEdit'])->name('subcategory.edit');
     Route::post('/sub/update/{id}', [SubCategoryController::class, 'SubCategoryUpdate'])->name('subcategory.update');
+    Route::get('/subcategory/ajax/{category_id}', [ProductController::class, 'GetSubCategory']);
 });
 
 
@@ -99,5 +101,19 @@ Route::prefix('newslater')->group(function () {
 
     // Frontent Newslater All Routes
     Route::post('/store', [HomeController::class, 'StoreNewslater'])->name('store.newslater');
+});
+
+// Admin Product  All Routes
+Route::prefix('product')->group(function () {
+    Route::get('/all', [ProductController::class, 'AllProduct'])->name('all.product');
+    Route::get('/add', [ProductController::class, 'AddProduct'])->name('add.product');
+    Route::post('/store', [ProductController::class, 'StoreProduct'])->name('store.product');
+    Route::get('/inactive/{id}', [ProductController::class, 'InactiveProduct'])->name('inactive.product');
+    Route::get('/active/{id}', [ProductController::class, 'ActiveProduct'])->name('active.product');
+    Route::get('/delete/{id}', [ProductController::class, 'DeleteProduct'])->name('product.delete');
+    Route::get('/view/{id}', [ProductController::class, 'ViewProduct'])->name('view.product');
+    Route::get('/edit/{id}', [ProductController::class, 'EditProduct'])->name('edit.product');
+    Route::post('/update/withoutphoto/{id}', [ProductController::class, 'UpdateProductWithoutPhoto'])->name('update.withoutphoto.product');
+    Route::post('/update/photo/{id}', [ProductController::class, 'UpdateProductPhoto'])->name('update.photo.product');
 });
 
