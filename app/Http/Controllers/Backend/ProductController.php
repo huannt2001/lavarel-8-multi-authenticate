@@ -64,6 +64,7 @@ class ProductController extends Controller
             'product_size' => $request->product_size,
             'product_color' => $request->product_color,
             'selling_price' => $request->selling_price,
+            'discount_price' => $request->discount_price,
             'product_details' => $request->product_details,
             'video_link' => $request->video_link,
             'main_slider' => $request->main_slider,

@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Category\BrandController;
 use App\Http\Controllers\Backend\Category\SubCategoryController;
 use App\Http\Controllers\Backend\Category\CouponController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Frontend\HomeController;
 /*
 |--------------------------------------------------------------------------
@@ -115,5 +116,25 @@ Route::prefix('product')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'EditProduct'])->name('edit.product');
     Route::post('/update/withoutphoto/{id}', [ProductController::class, 'UpdateProductWithoutPhoto'])->name('update.withoutphoto.product');
     Route::post('/update/photo/{id}', [ProductController::class, 'UpdateProductPhoto'])->name('update.photo.product');
+});
+
+
+// Admin Blog  All Routes
+Route::prefix('blog/category')->group(function () {
+    Route::get('/view', [PostController::class, 'BlogCatList'])->name('add.blog.categorylist');
+    Route::post('/store', [PostController::class, 'StoreBlogCat'])->name('store.blog.category');
+    Route::get('/delete/{id}', [PostController::class, 'DeleteBlogCat'])->name('delete.blog.category');
+    Route::get('/edit/{id}', [PostController::class, 'EditBlogCat'])->name('edit.blog.category');
+    Route::post('/update/{id}', [PostController::class, 'UpdateBlogCat'])->name('update.blog.category');
+});
+
+// Admin Blog  All Routes
+Route::prefix('blog/post')->group(function () {
+    Route::get('/view', [PostController::class, 'AllBlogPost'])->name('all.blogpost');
+    Route::get('/add', [PostController::class, 'CreateBlogPost'])->name('add.blogpost');
+    Route::post('/store', [PostController::class, 'StoreBlogPost'])->name('store.blogpost');
+    Route::get('/delete/{id}', [PostController::class, 'DeleteBlogPost'])->name('delete.blogpost');
+    Route::get('/edit/{id}', [PostController::class, 'EditBlogPost'])->name('edit.blogpost');
+    Route::post('/update/{id}', [PostController::class, 'UpdateBlogPost'])->name('update.blogpost');
 });
 

@@ -128,6 +128,18 @@
                                 </div>
                             </div><!-- col-4 -->
 
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Discount Price: <span
+                                            class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="discount_price" value=""
+                                        placeholder="Enter Discount Price">
+                                    @error('discount_price')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div><!-- col-4 -->
+
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label class="form-control-label">Product Details: <span
