@@ -72,6 +72,7 @@ class ProductController extends Controller
             'best_rated' => $request->best_rated,
             'mid_slider' => $request->mid_slider,
             'hot_new' => $request->hot_new,
+            'buyone_getone' => $request->buyone_getone,
             'trend' => $request->trend,
             'status' => 1,
             'image_one' => $image_one_url,
@@ -166,6 +167,7 @@ class ProductController extends Controller
                 'best_rated' => $request->best_rated,
                 'mid_slider' => $request->mid_slider,
                 'hot_new' => $request->hot_new,
+                'buyone_getone' => $request->buyone_getone,
                 'trend' => $request->trend,
                 'status' => 1,
             ]);

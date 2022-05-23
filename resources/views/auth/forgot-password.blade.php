@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -31,4 +31,46 @@
             </div>
         </form>
     </x-jet-authentication-card>
-</x-guest-layout>
+</x-guest-layout> --}}
+
+@extends('frontend.main_master')
+@section('content')
+    <div class="body-content">
+        <div class="container">
+            <div class="sign-in-page">
+                <div class="row">
+                    <!-- Sign-in -->
+                    <div class="col-md-6 col-sm-6 sign-in">
+                        <h4 class="">Forget Password</h4>
+                        <p class="">Forgot your password? No Problem</p>
+
+                        @if (session('status'))
+                            <div class="mb-4 font-medium text-sm" style="color: green">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('password.email') }}">
+                            @csrf
+
+                            <div class="form-group">
+                                <label class="info-title" for="exampleInputEmail1">Email Address <span>*</span></label>
+                                <input type="email" id="email" name="email"
+                                    class="form-control unicase-form-control text-input">
+                            </div>
+
+
+                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Email Password
+                                Reset Link</button>
+                        </form>
+
+
+                    </div>
+                    <!-- Sign-in -->
+
+                    <!-- create a new account -->
+                </div><!-- /.row -->
+            </div><!-- /.sigin-in-->
+        </div><!-- /.container -->
+    </div><!-- /.body-content -->
+@endsection

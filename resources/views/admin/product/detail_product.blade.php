@@ -187,6 +187,16 @@
                                 <span>Trend Product</span>
                             </label>
                         </div>
+                        <div class="col-lg-4">
+                            <label class="">
+                                @if ($product->buyone_getone == 1)
+                                    <span class="badge badge-success">Active</span>
+                                @else
+                                    <span class="badge badge-danger">Inactive</span>
+                                @endif
+                                <span>Buy One Get One</span>
+                            </label>
+                        </div>
                     </div>
 
                 </div><!-- form-layout -->

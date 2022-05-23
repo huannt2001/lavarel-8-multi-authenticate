@@ -218,6 +218,13 @@
                                     <span>Trend Product</span>
                                 </label>
                             </div>
+                            <div class="col-lg-4">
+                                <label class="ckbox">
+                                    <input type="checkbox" name="buyone_getone" value="1"
+                                        {{ $product->buyone_getone == 1 ? 'checked' : '' }}>
+                                    <span>Buy One Get One</span>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-layout-footer">
                             <button class="btn btn-info mg-r-5">Update Product</button>

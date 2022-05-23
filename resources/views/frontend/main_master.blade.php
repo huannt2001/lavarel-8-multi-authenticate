@@ -18,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/main_styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/responsive.css') }}">
 
+    {{-- Toaster --}}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 </head>
 
 <body>
@@ -53,21 +55,33 @@
                                                 <li><a href="#">Japanese</a></li>
                                             </ul>
                                         </li>
-                                        <li>
-                                            <a href="#">$ US dollar<i class="fas fa-chevron-down"></i></a>
-                                            <ul>
-                                                <li><a href="#">EUR Euro</a></li>
-                                                <li><a href="#">GBP British Pound</a></li>
-                                                <li><a href="#">JPY Japanese Yen</a></li>
-                                            </ul>
-                                        </li>
                                     </ul>
                                 </div>
-                                <div class="top_bar_user">
-                                    <div class="user_icon"><img src="/frontend/images/user.svg" alt=""></div>
-                                    <div><a href="{{ route('register') }}">Register</a></div>
-                                    <div><a href="{{ route('login') }}">Sign in</a></div>
-                                </div>
+
+                                @auth
+                                    <div class="top_bar_menu">
+                                        <ul class="standard_dropdown top_bar_dropdown">
+                                            <li>
+                                                <a href="{{ route('user.order') }}">
+                                                    <div class="user_icon"><img src="/frontend/images/user.svg" alt="">
+                                                    </div>
+                                                    Profile
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </a>
+                                                <ul>
+                                                    <li><a href="#">Wishlist</a></li>
+                                                    <li><a href="#">Checkout</a></li>
+                                                    <li><a href="#">Others</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @else
+                                    <div class="top_bar_user">
+                                        <div class="user_icon"><img src="/frontend/images/user.svg" alt=""></div>
+                                        <div><a href="{{ route('login') }}">Register/Login</a></div>
+                                    </div>
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -280,6 +294,27 @@
     <script src="{{ asset('frontend/plugins/slick-1.8.0/slick.js') }}"></script>
     <script src="{{ asset('frontend/plugins/easing/easing.js') }}"></script>
     <script src="{{ asset('frontend/js/custom.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+                case 'info':
+                    toastr.info('{{ Session::get('message') }}');
+                    break;
+                case 'success':
+                    toastr.success('{{ Session::get('message') }}');
+                    break;
+                case 'warning':
+                    toastr.warning('{{ Session::get('message') }}');
+                    break;
+                case 'error':
+                    toastr.error('{{ Session::get('message') }}');
+                    break;
+            }
+        @endif
+    </script>
 </body>
 
 </html>

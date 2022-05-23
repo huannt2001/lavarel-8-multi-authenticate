@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Category\CouponController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +22,10 @@ use App\Http\Controllers\Frontend\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
 
 Route::group(['prefix'=> 'admin', 'middleware'=>['admin:admin']], function(){
@@ -49,14 +54,31 @@ Route::post('/update/change/password', [AdminProfileController::class, 'AdminUpd
 
 
 
-Route::middleware(['auth:sanctum,web', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+// Route::middleware(['auth:sanctum,web', config('jetstream.auth_session'), 'verified'])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
+// User ALL Routes
+
+Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
+	$id = Auth::user()->id;
+    $user = User::find($id);
+    return view('frontend.profile.user_profile',compact('user'));
 });
 
+Route::get('/', [IndexController::class, 'index'])->name('user.home');
+Route::get('/user/logout', [IndexController::class, 'UserLogout'])->name('user.logout');
 
-Route::get('/', [IndexController::class, 'index']);
+Route::get('/user/profile', [IndexController::class, 'UserProfile'])->name('user.profile');
+
+Route::get('/user/order', [IndexController::class, 'UserOrder'])->name('user.order');
+
+Route::post('/user/profile/store', [IndexController::class, 'UserProfileStore'])->name('user.profile.store');
+
+Route::get('/user/change/password', [IndexController::class, 'UserChangePassword'])->name('change.password');
+
+Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
 
 // Admin Category  All Routes
 Route::prefix('category')->group(function () {
@@ -137,4 +159,7 @@ Route::prefix('blog/post')->group(function () {
     Route::get('/edit/{id}', [PostController::class, 'EditBlogPost'])->name('edit.blogpost');
     Route::post('/update/{id}', [PostController::class, 'UpdateBlogPost'])->name('update.blogpost');
 });
+
+
+
 

@@ -15,7 +15,6 @@ class IndexController extends Controller
 
     }
 
-
     public function UserLogout(){
     	Auth::logout();
     	return Redirect()->route('login');
@@ -28,7 +27,11 @@ class IndexController extends Controller
     	return view('frontend.profile.user_profile',compact('user'));
     }
 
-
+	public function UserOrder() {
+		$id = Auth::user()->id;
+    	$user = User::find($id);
+    	return view('frontend.profile.user_order',compact('user'));
+	}
 
     public function UserProfileStore(Request $request){
         $data = User::find(Auth::user()->id);
@@ -51,7 +54,7 @@ class IndexController extends Controller
 			'alert-type' => 'success'
 		);
 
-		return redirect()->route('dashboard')->with($notification);
+		return redirect()->route('user.home')->with($notification);
 
     } // end method 
 
@@ -72,13 +75,29 @@ class IndexController extends Controller
 
 		$hashedPassword = Auth::user()->password;
 		if (Hash::check($request->oldpassword,$hashedPassword)) {
-			$user = User::find(Auth::id());
-			$user->password = Hash::make($request->password);
-			$user->save();
-			Auth::logout();
-			return redirect()->route('user.logout');
+			if ($request->password === $request->password_confirmation) {
+				$user = User::find(Auth::id());
+				$user->password = Hash::make($request->password);
+				$user->save();
+				Auth::logout();
+				$notification = array(
+					'message' => 'Password Changed Successfully ! Now Login With Your New Password',
+					'alert-type' => 'success',
+				);
+				return redirect()->route('user.logout')->with($notification);
+			} else {
+				$notification = array(
+					'message' => 'New Password and Confirm Password not matched',
+					'alert-type' => 'error',
+				);
+				return redirect()->back()->with($notification);
+			}
 		}else{
-			return redirect()->back();
+			$notification = array(
+				'message' => 'Old Password not matched! Please try again',
+				'alert-type' => 'error',
+			);
+			return redirect()->back()->with($notification);
 		}
 
 
