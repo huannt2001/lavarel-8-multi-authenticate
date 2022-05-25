@@ -8,55 +8,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart_container">
-                        <div class="cart_title">Shopping Cart</div>
+                        <div class="cart_title">Checkout</div>
                         <div class="cart_items">
-                            {{-- <ul class="cart_list">
-                                @if (isset($carts) && count($carts) > 0)
-                                    @foreach ($carts as $item)
-                                        <li class="cart_item clearfix">
-                                            <div class="cart_item_image text-center"><img
-                                                    src="{{ asset($item->options->image) }}"
-                                                    style="width:70px;height:70px;" alt=""></div>
-                                            <div
-                                                class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                                                <div class="cart_item_name cart_info_col">
-                                                    <div class="cart_item_title">Name</div>
-                                                    <div class="cart_item_text">{{ $item->name }}</div>
-                                                </div>
-                                                @if ($item->options->size)
-                                                    <div class="cart_item_color cart_info_col">
-                                                        <div class="cart_item_title">Color</div>
-                                                        <div class="cart_item_text">{{ $item->options->color }}</div>>
-                                                    </div>
-                                                @else
-                                                @endif
-
-                                                @if ($item->options->size)
-                                                    <div class="cart_item_color cart_info_col">
-                                                        <div class="cart_item_title">Size</div>
-                                                        <div class="cart_item_text">{{ $item->options->size }}</div>>
-                                                    </div>
-                                                @else
-                                                @endif
-
-                                                <div class="cart_item_quantity cart_info_col">
-                                                    <div class="cart_item_title">Quantity</div>
-                                                    <div class="cart_item_text">{{ $item->qty }}</div>
-                                                </div>
-                                                <div class="cart_item_price cart_info_col">
-                                                    <div class="cart_item_title">Price</div>
-                                                    <div class="cart_item_text">${{ $item->price }}</div>
-                                                </div>
-                                                <div class="cart_item_total cart_info_col">
-                                                    <div class="cart_item_title">Total</div>
-                                                    <div class="cart_item_text">${{ $item->price * $item->qty }}</div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                @else
-                                @endif
-                            </ul> --}}
 
                             <table class="table table-hover">
                                 <thead>
@@ -115,11 +68,25 @@
                         </div>
 
                         <!-- Order Total -->
-                        <div class="order_total">
-                            <div class="order_total_content text-md-right">
-                                <div class="order_total_title">Order Total:</div>
-                                <div class="order_total_amount">${{ Cart::subtotal() }}</div>
+                        <div class="row justify-content-between">
+                            <div class="order-total-content col-lg-4">
+                                <h5>Apply Coupon</h5>
+                                <form action="">
+                                    <div class="form-group ">
+                                        <input type="text" name="" class="form-control" required=""
+                                            placeholder="Enter Your Coupon">
+                                    </div>
+                                    <button type="submit" class="btn btn-danger ml-2">Submit</button>
+                                </form>
                             </div>
+
+                            <ul class="list-group col-lg-4 mr-2" style="float: right">
+                                <li class="list-group-item">Subtotal: <span style="float: right">$4535</span></li>
+                                <li class="list-group-item">Coupon: <span style="float: right">$4535</span></li>
+                                <li class="list-group-item">Shipping Charge: <span style="float: right">$4535</span></li>
+                                <li class="list-group-item">Vat: <span style="float: right">$4535</span></li>
+                                <li class="list-group-item active">Total: <span style="float: right">$4535</span></li>
+                            </ul>
                         </div>
 
                         <div class="cart_buttons">

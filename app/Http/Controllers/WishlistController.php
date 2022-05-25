@@ -36,4 +36,11 @@ class WishlistController extends Controller
             ]);
         }
     }
+
+    public function wishlist() {
+        $userId = Auth::id();
+        $wishlists = Wishlist::where('user_id', $userId)->get();
+
+        return view('frontend.wishlist.view_wishlist', compact('wishlists'));
+    }
 }

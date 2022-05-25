@@ -206,7 +206,10 @@ Route::prefix('cart')->group(function () {
     Route::post('/update/{rowId}', [CartController::class, 'UpdateCart'])->name('update.cart');
     Route::get('/quick-view/{id}', [CartController::class, 'Viewproduct'])->name('view.product');// show modal quick view
     Route::post('/quick/add', [CartController::class, 'InsertCart'])->name('insert.into.cart');// Thêm sản phẩm vào cart khi người dùng click Quick View
+    Route::get('user/checkout', [CartController::class, 'Checkout'])->name('user.checkout');
 });
+
+Route::get('user/wishlist', [WishlistController::class, 'wishlist'])->name('user.wishlist');
 
 // Frontend routes
 Route::get('product/details/{id}/{product_name}', [FrontProductController::class, 'ProductView']);
