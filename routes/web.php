@@ -11,6 +11,9 @@ use App\Http\Controllers\Backend\Category\CouponController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Frontend\FrontProductController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +163,53 @@ Route::prefix('blog/post')->group(function () {
     Route::post('/update/{id}', [PostController::class, 'UpdateBlogPost'])->name('update.blogpost');
 });
 
+// Add to Wishlist
+Route::get('/add-to-wishlist/{id}', [WishlistController::class, 'AddToWishlist'])->name('add.wishlist');
 
+// Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'User'],function(){
+
+//     // Wishlist page
+//     Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
+    
+//     Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
+    
+//     Route::get('/wishlist-remove/{id}', [WishlistController::class, 'RemoveWishlistProduct']);
+    
+//     Route::post('/stripe/order', [StripeController::class, 'StripeOrder'])->name('stripe.order');
+    
+//     Route::post('/cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
+    
+//     Route::get('/my/orders', [AllUserController::class, 'MyOrders'])->name('my.orders');
+    
+//     Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
+    
+//     Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
+    
+//     Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
+    
+//     Route::get('/return/order/list', [AllUserController::class, 'ReturnOrderList'])->name('return.order.list');
+    
+//     Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.orders');
+        
+    
+//     /// Order Traking Route 
+//     Route::post('/order/tracking', [AllUserController::class, 'OrderTraking'])->name('order.tracking');    
+    
+//     });
+
+// Add to Cart
+Route::prefix('cart')->group(function () { 
+    Route::get('/add/{id}', [CartController::class, 'AddToCart'])->name('add.cart'); // dùng để add cart nhanh khi chưa có quick view
+    Route::get('/check', [CartController::class, 'Check']);
+    Route::get('/view', [CartController::class, 'ShowCart'])->name('show.cart');
+    Route::get('/remove/{rowId}', [CartController::class, 'RemoveCart'])->name('remove.cart');
+    Route::post('/update/{rowId}', [CartController::class, 'UpdateCart'])->name('update.cart');
+    Route::get('/quick-view/{id}', [CartController::class, 'Viewproduct'])->name('view.product');// show modal quick view
+    Route::post('/quick/add', [CartController::class, 'InsertCart'])->name('insert.into.cart');// Thêm sản phẩm vào cart khi người dùng click Quick View
+});
+
+// Frontend routes
+Route::get('product/details/{id}/{product_name}', [FrontProductController::class, 'ProductView']);
+Route::post('cart/product/add/{id}', [FrontProductController::class, 'AddToCart'])->name('store.product.cart'); // add to cart when user visit details product
 
 

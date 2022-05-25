@@ -161,7 +161,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label">Image One (Main Thumbnail): <span
-                                            class="tx-danger">*</span></label>
+                                            class="tx-danger">*</span></label> <br>
                                     <label class="custom-file">
                                         <input type="file" id="file" name="image_one" class="custom-file-input"
                                             onchange="readURL1(this);" required="">
