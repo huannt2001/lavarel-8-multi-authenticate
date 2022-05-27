@@ -1,6 +1,7 @@
 @extends('frontend.main_master')
 @section('content')
     @include('frontend.body.menubar')
+    @include('frontend.body.slider')
 
     @php
     $featured = DB::table('products')

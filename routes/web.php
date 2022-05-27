@@ -13,7 +13,9 @@ use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Frontend\FrontProductController;
+use App\Http\Controllers\PaymentController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -84,7 +86,7 @@ Route::get('/user/change/password', [IndexController::class, 'UserChangePassword
 Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
 
 // Admin Category  All Routes
-Route::prefix('category')->group(function () {
+Route::prefix('admin/category')->group(function () {
     Route::get('/view', [CategoryController::class, 'CategoryView'])->name('categories');
     Route::post('/store', [CategoryController::class, 'StoreCategory'])->name('store.category');
     Route::get('/delete/{id}', [CategoryController::class, 'CategoryDelete'])->name('category.delete');
@@ -103,7 +105,7 @@ Route::prefix('category')->group(function () {
 
 
 // Admin Brand  All Routes
-Route::prefix('brand')->group(function () {
+Route::prefix('admin/brand')->group(function () {
     Route::get('/view', [BrandController::class, 'BrandView'])->name('all.brand');
     Route::post('/store', [BrandController::class, 'StoreBrand'])->name('store.brand');
     Route::get('/delete/{id}', [BrandController::class, 'BrandDelete'])->name('brand.delete');
@@ -112,7 +114,7 @@ Route::prefix('brand')->group(function () {
 });
 
 // Admin Coupon  All Routes
-Route::prefix('coupon')->group(function () {
+Route::prefix('admin/coupon')->group(function () {
     Route::get('/view', [CouponController::class, 'CouponView'])->name('all.coupon');
     Route::post('/store', [CouponController::class, 'StoreCoupon'])->name('store.coupon');
     Route::get('/delete/{id}', [CouponController::class, 'DeleteCoupon'])->name('coupon.delete');
@@ -121,7 +123,7 @@ Route::prefix('coupon')->group(function () {
 });
 
 // Admin Newslater  All Routes
-Route::prefix('newslater')->group(function () {
+Route::prefix('admin/newslater')->group(function () {
     Route::get('/view', [CouponController::class, 'NewslaterView'])->name('all.newslater');
     Route::get('/delete/{id}', [CouponController::class, 'DeleteNewslater'])->name('newslater.delete');
 
@@ -130,7 +132,7 @@ Route::prefix('newslater')->group(function () {
 });
 
 // Admin Product  All Routes
-Route::prefix('product')->group(function () {
+Route::prefix('admin/product')->group(function () {
     Route::get('/all', [ProductController::class, 'AllProduct'])->name('all.product');
     Route::get('/add', [ProductController::class, 'AddProduct'])->name('add.product');
     Route::post('/store', [ProductController::class, 'StoreProduct'])->name('store.product');
@@ -145,7 +147,7 @@ Route::prefix('product')->group(function () {
 
 
 // Admin Blog  All Routes
-Route::prefix('blog/category')->group(function () {
+Route::prefix('admin/blog/category')->group(function () {
     Route::get('/view', [PostController::class, 'BlogCatList'])->name('add.blog.categorylist');
     Route::post('/store', [PostController::class, 'StoreBlogCat'])->name('store.blog.category');
     Route::get('/delete/{id}', [PostController::class, 'DeleteBlogCat'])->name('delete.blog.category');
@@ -154,7 +156,7 @@ Route::prefix('blog/category')->group(function () {
 });
 
 // Admin Blog  All Routes
-Route::prefix('blog/post')->group(function () {
+Route::prefix('admin/blog/post')->group(function () {
     Route::get('/view', [PostController::class, 'AllBlogPost'])->name('all.blogpost');
     Route::get('/add', [PostController::class, 'CreateBlogPost'])->name('add.blogpost');
     Route::post('/store', [PostController::class, 'StoreBlogPost'])->name('store.blogpost');
@@ -215,4 +217,20 @@ Route::get('user/wishlist', [WishlistController::class, 'wishlist'])->name('user
 Route::get('product/details/{id}/{product_name}', [FrontProductController::class, 'ProductView']);
 Route::post('cart/product/add/{id}', [FrontProductController::class, 'AddToCart'])->name('store.product.cart'); // add to cart when user visit details product
 
+// Frontend Coupon Option
+Route::post('/coupon-apply', [CartController::class, 'CouponApply'])->name('apply.coupon');
+Route::get('/coupon-remove', [CartController::class, 'CouponRemove'])->name('remove.coupon');
 
+// Blog Post routes
+Route::get('/blog-post', [BlogController::class, 'Blog'])->name('blog.post');
+Route::get('/blog/single/{id}', [BlogController::class, 'BlogSingle'])->name('blog.single');
+// Multi language Blog routes
+Route::get('/language/english', [BlogController::class, 'English'])->name('language.english');
+Route::get('/language/vietnam', [BlogController::class, 'Vietnam'])->name('language.vietnam');
+
+// Payment routes
+Route::get('/payment', [CartController::class, 'PaymentPage'])->name('payment.step');
+Route::post('/user/payment/process', [PaymentController::class, 'PaymenProcess'])->name('payment.process');
+
+Route::get('/subcategory/{id}', [FrontProductController::class, 'ProductSubCate'])->name('view.subcategory');
+Route::get('/category/{id}', [FrontProductController::class, 'ProductCate'])->name('view.category');

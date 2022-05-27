@@ -52,12 +52,16 @@
                                 <div class="top_bar_menu">
                                     <ul class="standard_dropdown top_bar_dropdown">
                                         <li>
-                                            <a href="#">English<i class="fas fa-chevron-down"></i></a>
-                                            <ul>
-                                                <li><a href="#">Italian</a></li>
-                                                <li><a href="#">Spanish</a></li>
-                                                <li><a href="#">Japanese</a></li>
-                                            </ul>
+                                            @php
+                                                $language = Session::get('lang');
+                                            @endphp
+                                            @if (Session::get('lang') == 'vietnam')
+                                                <a href="{{ route('language.english') }}">English<i
+                                                        class="fas fa-chevron-down"></i></a>
+                                            @else
+                                                <a href="{{ route('language.vietnam') }}">Việt Nam<i
+                                                        class="fas fa-chevron-down"></i></a>
+                                            @endif
                                         </li>
                                     </ul>
                                 </div>

@@ -21,7 +21,7 @@ $categories = DB::table('categories')->get();
                             @if (isset($categories) && count($categories) > 0)
                                 @foreach ($categories as $category)
                                     <li class="hassubs">
-                                        <a href="#">{{ $category->category_name }}<i
+                                        <a href="{{ route('view.category', $category->id) }}">{{ $category->category_name }}<i
                                                 class="fas fa-chevron-right"></i></a>
                                         <ul>
                                             @php
@@ -32,7 +32,7 @@ $categories = DB::table('categories')->get();
 
                                             @foreach ($subcategories as $subcategory)
                                                 <li class="hassubs">
-                                                    <a href="#">{{ $subcategory->subcategory_name }}<i
+                                                    <a href="{{ route('view.subcategory', $subcategory->id) }}">{{ $subcategory->subcategory_name }}<i
                                                             class="fas fa-chevron-right"></i></a>
                                                 </li>
                                             @endforeach
@@ -99,7 +99,7 @@ $categories = DB::table('categories')->get();
                                     <li><a href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
                                 </ul>
                             </li>
-                            <li><a href="blog.html">Blog<i class="fas fa-chevron-down"></i></a></li>
+                            <li><a href="{{ route('blog.post') }}">Blog<i class="fas fa-chevron-down"></i></a></li>
                             <li><a href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
                         </ul>
                     </div>
@@ -218,38 +218,3 @@ $categories = DB::table('categories')->get();
 </div>
 
 </header>
-
-<!-- Banner -->
-@php
-$slider = DB::table('products')
-    ->join('brands', 'products.brand_id', 'brands.id')
-    ->select('products.*', 'brands.brand_name')
-    ->where('main_slider', 1)
-    ->orderBy('id', 'DESC')
-    ->first();
-@endphp
-
-<div class="banner">
-    <div class="banner_background" style="background-image:url(images/banner_background.jpg)"></div>
-    <div class="container fill_height">
-        <div class="row fill_height">
-            @if ($slider)
-                <div class="banner_product_image"><img src="{{ $slider->image_one }}" alt=""></div>
-                <div class="col-lg-5 offset-lg-4 fill_height">
-                    <div class="banner_content">
-                        <h1 class="banner_text">{{ $slider->product_name }}</h1>
-                        <div class="banner_price">
-                            @if ($slider->discount_price)
-                                <span>${{ $slider->selling_price }}</span>${{ $slider->discount_price }}
-                            @else
-                                ${{ $slider->selling_price }}
-                            @endif
-                        </div>
-                        <div class="banner_product_name">{{ $slider->brand_name }}</div>
-                        <div class="button banner_button"><a href="#">Shop Now</a></div>
-                    </div>
-                </div>
-        </div>
-        @endif
-    </div>
-</div>

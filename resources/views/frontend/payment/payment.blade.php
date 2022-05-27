@@ -1,18 +1,13 @@
 @extends('frontend.main_master')
 @section('content')
-    @include('frontend.body.menubar')
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/cart_styles.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/cart_responsive.css') }}">
-
-    <div class="cart_section">
+    <div class="body-content">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="cart_container">
-                        <div class="cart_title">Checkout</div>
+            <div class="sign-in-page">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7 sign-in border border-dark rounded p-3">
+                        <h3 class="">Cart Product</h3>
                         <div class="cart_items">
-
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -23,7 +18,6 @@
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,23 +31,9 @@
                                                 <td class="align-middle">{{ $item->name }}</td>
                                                 <td class="align-middle">{{ $item->options->color }}</td>
                                                 <td class="align-middle">{{ $item->options->size }}</td>
-                                                <td class="align-middle">
-                                                    <form action="{{ route('update.cart', $item->rowId) }}" method="post"
-                                                        class="d-flex">
-                                                        @csrf
-                                                        <input type="number" value="{{ $item->qty }}" name="qty"
-                                                            class="form-control" style="width:70px;">
-                                                        <button class="btn btn-success btn-sm" type="submit">
-                                                            <i class="fas fa-check-square"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                <td class="align-middle">{{ $item->qty }}</td>
                                                 <td class="align-middle">${{ $item->price }}</td>
                                                 <td class="align-middle">${{ $item->price * $item->qty }}</td>
-                                                <td class="align-middle">
-                                                    <a href="{{ route('remove.cart', $item->rowId) }}"
-                                                        class="btn btn-danger ">X</a>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -65,29 +45,7 @@
                                 </tbody>
                             </table>
 
-
-
-                        </div>
-
-                        <!-- Order Total -->
-                        <div class="row justify-content-between">
-                            <div class="order-total-content col-lg-4">
-                                @if (Session::has('coupon'))
-                                @else
-                                    <h5>Apply Coupon</h5>
-                                    <form action="{{ route('apply.coupon') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group ">
-                                            <input type="text" name="coupon" class="form-control" required=""
-                                                placeholder="Enter Your Coupon">
-                                        </div>
-                                        <button type="submit" class="btn btn-danger ml-2">Submit</button>
-                                    </form>
-                                @endif
-                            </div>
-
-
-                            <ul class="list-group col-lg-4 mr-2" style="float: right">
+                            <ul class="list-group col-lg-8 mr-2" style="float: right">
                                 @if (Session::has('coupon'))
                                     <li class=" list-group-item">Subtotal: <span
                                             style="float: right">${{ Cart::subtotal() }}</span>
@@ -126,43 +84,83 @@
                                 @endif
                             </ul>
                         </div>
-
-                        <div class="cart_buttons">
-                            <button type="button" class="button cart_button_clear">All Cancel</button>
-                            <a href="{{ route('payment.step') }}" class="button cart_button_checkout">Finally Step</a>
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="newsletter">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div
-                        class="newsletter_container d-flex flex-lg-row flex-column align-items-lg-center align-items-center justify-content-lg-start justify-content-center">
-                        <div class="newsletter_title_container">
-                            <div class="newsletter_icon"><img src="/frontend/images/send.png" alt=""></div>
-                            <div class="newsletter_title">Sign up for Newsletter</div>
-                            <div class="newsletter_text">
-                                <p>...and receive %20 coupon for first shopping.</p>
+                    <div class="col-md-5 col-sm-5 create-new-account border border-dark rounded p-3">
+                        <h4 class="checkout-subtitle">Shipping Address</h4>
+                        <form method="POST" action="{{ route('payment.process') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label class="info-title" for="exampleInputEmail1">Name <span>*</span></label>
+                                <input type="text" id="name" name="name" value=""
+                                    class="form-control unicase-form-control text-input">
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                        </div>
-                        <div class="newsletter_content clearfix">
-                            <form action="#" class="newsletter_form">
-                                <input type="email" class="newsletter_input" required="required"
-                                    placeholder="Enter your email address">
-                                <button class="newsletter_button">Subscribe</button>
-                            </form>
-                            <div class="newsletter_unsubscribe_link"><a href="#">unsubscribe</a></div>
-                        </div>
+                            <div class="form-group">
+                                <label class="info-title" for="exampleInputEmail1">Email <span>*</span></label>
+                                <input type="email" id="email" name="email" value=""
+                                    class="form-control unicase-form-control text-input">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="info-title" for="exampleInputEmail1">Address <span>*</span></label>
+                                <input type="text" id="address" name="address" value=""
+                                    class="form-control unicase-form-control text-input">
+                                @error('address')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="info-title" for="exampleInputEmail1">City <span>*</span></label>
+                                <input type="text" id="city" name="city" value=""
+                                    class="form-control unicase-form-control text-input">
+                                @error('city')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <h4 class="">Payment By</h4>
+
+                            <div class="form-group">
+                                <ul class="logos_list">
+                                    <li>
+                                        <input type="radio" name="payment" value="stripe">
+                                        <img src="{{ asset('frontend/images/mastercard.png') }}" alt=""
+                                            style="width:80px;">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="payment" value="paypal">
+                                        <img src="{{ asset('frontend/images/paypal.png') }}" alt="" style="height:60px;">
+                                    </li>
+                                    <li>
+                                        <input type="radio" name="payment" value="ideal">
+                                        <img src="{{ asset('frontend/images/mollie.png') }}" alt="" style="height:60px;">
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Pay Now</button>
+                        </form>
+
+
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="{{ asset('frontend/js/cart_custom.js') }}"></script>
 @endsection

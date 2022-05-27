@@ -1,5 +1,7 @@
 @extends('frontend.main_master')
 @section('content')
+    @include('frontend.body.menubar')
+
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/product_styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/styles/product_responsive.css') }}">
 
