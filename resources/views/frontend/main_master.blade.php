@@ -24,6 +24,8 @@
 
     {{-- SweetAlert --}}
     <link rel="stylesheet" href="sweetalert2.min.css">
+
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>

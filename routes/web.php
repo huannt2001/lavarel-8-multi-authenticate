@@ -231,6 +231,7 @@ Route::get('/language/vietnam', [BlogController::class, 'Vietnam'])->name('langu
 // Payment routes
 Route::get('/payment', [CartController::class, 'PaymentPage'])->name('payment.step');
 Route::post('/user/payment/process', [PaymentController::class, 'PaymenProcess'])->name('payment.process');
+Route::post('/user/strip/charge', [PaymentController::class, 'StripeCharge'])->name('stripe.charge');
 
 Route::get('/subcategory/{id}', [FrontProductController::class, 'ProductSubCate'])->name('view.subcategory');
 Route::get('/category/{id}', [FrontProductController::class, 'ProductCate'])->name('view.category');
