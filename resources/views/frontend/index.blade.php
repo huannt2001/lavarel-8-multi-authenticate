@@ -192,7 +192,7 @@
                         <div class="tabbed_container">
                             <div class="tabs">
                                 <ul class="clearfix">
-                                    <li class="active">Featured</li>
+                                    <li class="active">Featured 1</li>
                                 </ul>
                                 <div class="tabs_line"><span></span></div>
                             </div>
