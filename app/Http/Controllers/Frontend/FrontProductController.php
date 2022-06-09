@@ -9,12 +9,13 @@ use App\Models\Product;
 use App\Models\Admin\Category;
 use App\Models\Admin\SubCategory;
 use App\Models\Admin\Brand;
-use DB;
-use Cart;
+use Illuminate\Support\Facades\DB;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class FrontProductController extends Controller
 {
-    public function ProductView($id, $product_name) {
+    public function ProductView($id, $product_name)
+    {
         $product = Product::where('id', $id)->first();
 
         $color = $product->product_color;
@@ -25,7 +26,8 @@ class FrontProductController extends Controller
         return view('frontend.product.product_details', compact('product', 'product_color', 'product_size'));
     }
 
-    public function AddToCart(Request $request, $id) {
+    public function AddToCart(Request $request, $id)
+    {
         $product = Product::where('id', $id)->first();
 
         if (!$product->discount_price) {
@@ -47,7 +49,6 @@ class FrontProductController extends Controller
                 'alert-type' => 'success',
             );
             return redirect()->back()->with($notification);
-
         } else {
             Cart::add([
                 'id' => $product->id,
@@ -70,7 +71,8 @@ class FrontProductController extends Controller
         }
     }
 
-    public function ProductSubCate($subId) {
+    public function ProductSubCate($subId)
+    {
         $subcate = SubCategory::where('id', $subId)->first();
         $products = Product::where('subcategory_id', $subId)->paginate(5);
         $categories = Category::all();
@@ -79,11 +81,12 @@ class FrontProductController extends Controller
         return view('frontend.product.all_sub_product', compact('products', 'categories', 'brandIds', 'subcate'));
     }
 
-    public function ProductCate($cateId) {
+    public function ProductCate($cateId)
+    {
         $category = Category::where('id', $cateId)->first();
         $categories = Category::all();
         $brandIds = Product::where('subcategory_id', $cateId)->select('brand_id')->groupBy('brand_id')->get(); //group by gộp các phần tử trùng nhau lại
         $category_all = Product::where('category_id', $cateId)->paginate(5);
         return view('frontend.product.all_cate_product', compact('category_all', 'categories', 'brandIds', 'category'));
-    } 
+    }
 }

@@ -7,21 +7,24 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
 use App\Models\Admin\SubCategory;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoryController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:admin');
     }
 
-    public function SubCategoryView() {
-        $categories = Category::orderBy('category_name','ASC')->get();
+    public function SubCategoryView()
+    {
+        $categories = Category::orderBy('category_name', 'ASC')->get();
         $subcategories = SubCategory::latest()->get();
         return view('admin.subcategory.subcategory_view', compact('subcategories', 'categories'));
     }
 
-    public function StoreSubCategory(Request $request) {
+    public function StoreSubCategory(Request $request)
+    {
         $validatedData = $request->validate([
             'subcategory_name' => 'required',
             'category_id' => 'required',
@@ -34,15 +37,15 @@ class SubCategoryController extends Controller
         ]);
 
         $notification = array(
-			'message' => 'Sub Category Inserted Successfully',
-			'alert-type' => 'success'
-		);
+            'message' => 'Sub Category Inserted Successfully',
+            'alert-type' => 'success'
+        );
 
         return redirect()->back()->with($notification);
-
     }
 
-    public function SubCategoryDelete($id) {
+    public function SubCategoryDelete($id)
+    {
         if (isset($id)) {
             SubCategory::findOrFail($id)->delete();
             $notification = array(
@@ -59,9 +62,10 @@ class SubCategoryController extends Controller
         }
     }
 
-    public function SubCategoryEdit($id) {
+    public function SubCategoryEdit($id)
+    {
         if (isset($id)) {
-            $categories = Category::orderBy('category_name','ASC')->get();
+            $categories = Category::orderBy('category_name', 'ASC')->get();
             $subcategory = SubCategory::findOrFail($id);
             return view('admin.subcategory.subcategory_edit',  compact('subcategory', 'categories'));
         } else {
@@ -73,7 +77,8 @@ class SubCategoryController extends Controller
         }
     }
 
-    public function SubCategoryUpdate(Request $request, $id) {
+    public function SubCategoryUpdate(Request $request, $id)
+    {
         // $category = Category::findOrFail($id);
         // $update = $category->update([
         //     'category_name' => $request->category_name,
@@ -101,4 +106,3 @@ class SubCategoryController extends Controller
         }
     }
 }
-

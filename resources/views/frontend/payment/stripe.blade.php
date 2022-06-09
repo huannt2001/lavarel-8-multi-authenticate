@@ -137,6 +137,7 @@
                                 <input type="hidden" name="ship_email" value="{{ $data['email'] }}">
                                 <input type="hidden" name="ship_address" value="{{ $data['address'] }}">
                                 <input type="hidden" name="ship_city" value="{{ $data['city'] }}">
+                                <input type="hidden" name="payment_type" value="{{ $data['payment'] }}">
 
                             </div><br>
                             <button class="btn btn-info mt-3">Payment Now</button>

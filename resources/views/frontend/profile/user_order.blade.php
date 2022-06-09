@@ -24,12 +24,12 @@
 
                 </div> <!-- // end col md 2 -->
 
-                <div class="col-md-2">
+                <div class="col-md-1">
 
                 </div> <!-- // end col md 2 -->
 
 
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <div class="card">
                         <h3 class="text-center"><span
                                 class="text-danger">Hi....</span><strong>{{ Auth::user()->name }}</strong> Your order
@@ -37,31 +37,30 @@
                         <table class="table table-response">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Body</th>
+                                    <th scope="col">Payment Type</th>
+                                    <th scope="col">Payment ID</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status Code</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td scope="col">1</td>
-                                    <td scope="col">Mark 1</td>
-                                    <td scope="col">Mark 2</td>
-                                    <td scope="col">Mark 3</td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">1</td>
-                                    <td scope="col">Mark 1</td>
-                                    <td scope="col">Mark 2</td>
-                                    <td scope="col">Mark 3</td>
-                                </tr>
-                                <tr>
-                                    <td scope="col">1</td>
-                                    <td scope="col">Mark 1</td>
-                                    <td scope="col">Mark 2</td>
-                                    <td scope="col">Mark 3</td>
-                                </tr>
+                                @foreach ($orders as $item)
+                                    <tr>
+                                        <td scope="col">{{ $item->payment_type }}</td>
+                                        <td scope="col">{{ $item->payment_id }} </td>
+                                        <td scope="col">{{ $item->total }} $</td>
+                                        <td scope="col">{{ $item->date }}</td>
+                                        <td scope="col">{{ $item->status_code }}</td>
+                                        <td scope="col">
+                                            <a href="{{ route('user.view.detail.order', $item->id) }}"
+                                                class="btn btn-sm btn-info">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

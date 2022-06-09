@@ -7,21 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\PostCategory;
 use App\Models\Post;
-use DB;
-use Image;                                          
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PostController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:admin');
     }
 
-    public function BlogCatList() {
+    public function BlogCatList()
+    {
         $blogcats = PostCategory::all();
         return view('admin.blog.category.blog_category_view', compact('blogcats'));
     }
 
-    public function StoreBlogCat(Request $request) {
+    public function StoreBlogCat(Request $request)
+    {
         $validateData = $request->validate([
             'category_name_en' => 'required|max:255',
             'category_name_vn' => 'required|max:255',
@@ -34,14 +37,15 @@ class PostController extends Controller
         ]);
 
         $notification = array(
-			'message' => 'Blog Category Inserted Successfully',
-			'alert-type' => 'success'
-		);
+            'message' => 'Blog Category Inserted Successfully',
+            'alert-type' => 'success'
+        );
 
         return redirect()->back()->with($notification);
     }
 
-    public function DeleteBlogCat($id) {
+    public function DeleteBlogCat($id)
+    {
         if (isset($id)) {
             PostCategory::findOrFail($id)->delete();
             $notification = array(
@@ -58,11 +62,11 @@ class PostController extends Controller
         }
     }
 
-    public function EditBlogCat($id) {
+    public function EditBlogCat($id)
+    {
         if (isset($id)) {
             $blogcate = PostCategory::findOrFail($id);
             return view('admin.blog.category.edit_blog_category', compact('blogcate'));
-
         } else {
             $notification = array(
                 'message' => 'Missing Required Parameter',
@@ -72,7 +76,8 @@ class PostController extends Controller
         }
     }
 
-    public function UpdateBlogCat(Request $request, $id) {
+    public function UpdateBlogCat(Request $request, $id)
+    {
         $validateData = $request->validate([
             'category_name_en' => 'required|max:255',
             'category_name_vn' => 'required|max:255',
@@ -99,20 +104,22 @@ class PostController extends Controller
         }
     }
 
-    public function CreateBlogPost() {
-        $blogcates = PostCategory::latest()->get(); 
+    public function CreateBlogPost()
+    {
+        $blogcates = PostCategory::latest()->get();
         return view('admin.blog.post.create_blog_post', compact('blogcates'));
     }
 
-    public function StoreBlogPost(Request $request) {
-        
-        
+    public function StoreBlogPost(Request $request)
+    {
+
+
         $post_image = $request->file('post_image');
         if ($post_image) {
-            $post_image_name = hexdec(uniqid()).'.'. $post_image->getClientOriginalExtension();
-            Image::make($post_image)->resize(400, 200)->save('media/post/'. $post_image_name);
-            $post_image_url = 'media/post/'. $post_image_name;
-                  
+            $post_image_name = hexdec(uniqid()) . '.' . $post_image->getClientOriginalExtension();
+            Image::make($post_image)->resize(400, 200)->save('media/post/' . $post_image_name);
+            $post_image_url = 'media/post/' . $post_image_name;
+
             Post::insert([
                 'category_id' => $request->category_id,
                 'post_title_en' => $request->post_title_en,
@@ -129,7 +136,7 @@ class PostController extends Controller
             );
             return redirect()->back()->with($notification);
         } else {
-            
+
             Post::insert([
                 'category_id' => $request->category_id,
                 'post_title_en' => $request->post_title_en,
@@ -138,22 +145,23 @@ class PostController extends Controller
                 'details_vn' => $request->details_vn,
                 'created_at' => Carbon::now(),
             ]);
-    
+
             $notification = array(
                 'message' => 'Blog Post Inserted Without Image',
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($notification);
         }
-
     }
 
-    public function AllBlogPost() {
+    public function AllBlogPost()
+    {
         $posts = Post::latest()->get();
         return view('admin.blog.post.blog_post_view', compact('posts'));
     }
 
-    public function DeleteBlogPost($id) {
+    public function DeleteBlogPost($id)
+    {
         if (isset($id)) {
             $post = Post::findOrFail($id);
             $post_image = $post->post_image;
@@ -175,13 +183,15 @@ class PostController extends Controller
         }
     }
 
-    public function EditBlogPost($id) {
+    public function EditBlogPost($id)
+    {
         $blogcates = PostCategory::latest()->get();
         $post = Post::findOrFail($id);
-        return view ('admin.blog.post.edit_blog_post', compact('post', 'blogcates'));
+        return view('admin.blog.post.edit_blog_post', compact('post', 'blogcates'));
     }
 
-    public function UpdateBlogPost(Request $request, $id) {
+    public function UpdateBlogPost(Request $request, $id)
+    {
         $old_image = $request->old_image;
         $post_image = $request->file('post_image');
 
@@ -197,10 +207,10 @@ class PostController extends Controller
             if ($old_image) {
                 unlink($old_image);
             }
-            $post_image_name = hexdec(uniqid()).'.'. $post_image->getClientOriginalExtension();
-            Image::make($post_image)->resize(400, 200)->save('media/post/'. $post_image_name);
-            $data['post_image'] = 'media/post/'. $post_image_name;
-                  
+            $post_image_name = hexdec(uniqid()) . '.' . $post_image->getClientOriginalExtension();
+            Image::make($post_image)->resize(400, 200)->save('media/post/' . $post_image_name);
+            $data['post_image'] = 'media/post/' . $post_image_name;
+
             DB::table('posts')->where('id', $id)->update($data);
 
             $notification = array(
@@ -211,7 +221,7 @@ class PostController extends Controller
         } else {
             $data['post_image'] = $old_image;
             DB::table('posts')->where('id', $id)->update($data);
-    
+
             $notification = array(
                 'message' => 'Blog Post Updated Without Image',
                 'alert-type' => 'success'
@@ -219,5 +229,4 @@ class PostController extends Controller
             return redirect()->route('all.blogpost')->with($notification);
         }
     }
- 
 }

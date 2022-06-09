@@ -9,48 +9,53 @@ use App\Models\Admin\Category;
 use App\Models\Admin\SubCategory;
 use App\Models\Admin\Brand;
 use App\Models\Product;
-use DB;
-use Image;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:admin');
     }
 
-    public function AllProduct() {
+    public function AllProduct()
+    {
         $products = Product::latest()->get();
         return view('admin.product.product_view', compact('products'));
     }
 
-    public function AddProduct() {
+    public function AddProduct()
+    {
         $categories = Category::latest()->get();
-		$brands = Brand::latest()->get();
+        $brands = Brand::latest()->get();
         return view('admin.product.create_product', compact('categories', 'brands'));
     }
 
-    public function GetSubCategory($category_id) {
+    public function GetSubCategory($category_id)
+    {
         $categories = SubCategory::where('category_id', $category_id)->get();
         return json_encode($categories);
     }
 
-    public function StoreProduct(Request $request) {
+    public function StoreProduct(Request $request)
+    {
 
         $image_one = $request->image_one;
         $image_two = $request->image_two;
         $image_three = $request->image_three;
         if ($image_one && $image_two && $image_three) {
-            $image_one_name = hexdec(uniqid()).'.'. $image_one->getClientOriginalExtension();
-            Image::make($image_one)->resize(300, 300)->save('media/product/'. $image_one_name);
-            $image_one_url = 'media/product/'. $image_one_name;
+            $image_one_name = hexdec(uniqid()) . '.' . $image_one->getClientOriginalExtension();
+            Image::make($image_one)->resize(300, 300)->save('media/product/' . $image_one_name);
+            $image_one_url = 'media/product/' . $image_one_name;
 
-            $image_two_name = hexdec(uniqid()).'.'. $image_two->getClientOriginalExtension();
-            Image::make($image_two)->resize(300, 300)->save('media/product/'. $image_two_name);
-            $image_two_url = 'media/product/'. $image_two_name;
+            $image_two_name = hexdec(uniqid()) . '.' . $image_two->getClientOriginalExtension();
+            Image::make($image_two)->resize(300, 300)->save('media/product/' . $image_two_name);
+            $image_two_url = 'media/product/' . $image_two_name;
 
-            $image_three_name = hexdec(uniqid()).'.'. $image_three->getClientOriginalExtension();
-            Image::make($image_three)->resize(300, 300)->save('media/product/'. $image_three_name);
-            $image_three_url = 'media/product/'. $image_three_name;
+            $image_three_name = hexdec(uniqid()) . '.' . $image_three->getClientOriginalExtension();
+            Image::make($image_three)->resize(300, 300)->save('media/product/' . $image_three_name);
+            $image_three_url = 'media/product/' . $image_three_name;
         }
 
 
@@ -82,38 +87,41 @@ class ProductController extends Controller
         ]);
 
         $notification = array(
-			'message' => 'Product Inserted Successfully',
-			'alert-type' => 'success'
-		);
+            'message' => 'Product Inserted Successfully',
+            'alert-type' => 'success'
+        );
 
         return redirect()->back()->with($notification);
     }
 
-    public function InactiveProduct($id) {
+    public function InactiveProduct($id)
+    {
         Product::findorFail($id)->update([
             'status' => 0,
         ]);
 
         $notification = array(
-			'message' => 'Product Successfully Inactive',
-			'alert-type' => 'success'
-		);
+            'message' => 'Product Successfully Inactive',
+            'alert-type' => 'success'
+        );
         return redirect()->back()->with($notification);
     }
 
-    public function ActiveProduct($id) {
+    public function ActiveProduct($id)
+    {
         Product::findorFail($id)->update([
-            'status' => 1                                                                                                                                                                                                                                                                                               ,
+            'status' => 1,
         ]);
 
         $notification = array(
-			'message' => 'Product Successfully Active',
-			'alert-type' => 'success'
-		);
+            'message' => 'Product Successfully Active',
+            'alert-type' => 'success'
+        );
         return redirect()->back()->with($notification);
     }
 
-    public function DeleteProduct($id) {
+    public function DeleteProduct($id)
+    {
         $product = Product::findorFail($id);
 
         $image_one = $product->image_one;
@@ -127,28 +135,31 @@ class ProductController extends Controller
         Product::findorFail($id)->delete();
 
         $notification = array(
-			'message' => 'Product Delelted Successfully',
-			'alert-type' => 'success'
-		);
+            'message' => 'Product Delelted Successfully',
+            'alert-type' => 'success'
+        );
         return redirect()->back()->with($notification);
     }
 
-    public function ViewProduct($id) {
-       
+    public function ViewProduct($id)
+    {
         $product = Product::findOrFail($id);
+        dd($product);
         return view('admin.product.detail_product', compact('product'));
     }
 
-    public function EditProduct($id) {
+    public function EditProduct($id)
+    {
         $categories = Category::latest()->get();
         $subcategories = SubCategory::latest()->get();
-		$brands = Brand::latest()->get();
+        $brands = Brand::latest()->get();
         $product = Product::findOrFail($id);
         return view('admin.product.edit_product', compact('product', 'categories', 'subcategories', 'brands'));
     }
 
-    public function UpdateProductWithoutPhoto(Request $request, $id) {
-        if(isset($id)) {
+    public function UpdateProductWithoutPhoto(Request $request, $id)
+    {
+        if (isset($id)) {
             $update = DB::table('products')->where('id', $id)->update([
                 'product_name' => $request->product_name,
                 'product_code' => $request->product_code,
@@ -193,11 +204,12 @@ class ProductController extends Controller
         }
     }
 
-    public function UpdateProductPhoto(Request $request, $id) {
+    public function UpdateProductPhoto(Request $request, $id)
+    {
         $old_one = $request->old_one;
         $old_two = $request->old_two;
         $old_three = $request->old_three;
-        
+
         $image_one = $request->file('image_one');
         $image_two = $request->file('image_two');
         $image_three = $request->file('image_three');
@@ -206,9 +218,9 @@ class ProductController extends Controller
             unlink($old_one);
             $image_name = date('dmy_H_s_i');
             $ext = strtolower($image_one->getClientOriginalExtension());
-            $image_full_name = $image_name.'.'.$ext;
+            $image_full_name = $image_name . '.' . $ext;
             $upload_path = 'media/product/';
-            $image_url = $upload_path.$image_full_name;
+            $image_url = $upload_path . $image_full_name;
             $success = $image_one->move($upload_path, $image_full_name);
 
             Product::findOrFail($id)->update([
@@ -219,7 +231,7 @@ class ProductController extends Controller
                 'message' => 'Image One Updated Successfully',
                 'alert-type' => 'success'
             );
-    
+
             return redirect()->route('all.product')->with($notification);
         };
 
@@ -227,9 +239,9 @@ class ProductController extends Controller
             unlink($old_two);
             $image_name = date('dmy_H_s_i');
             $ext = strtolower($image_two->getClientOriginalExtension());
-            $image_full_name = $image_name.'.'.$ext;
+            $image_full_name = $image_name . '.' . $ext;
             $upload_path = 'media/product/';
-            $image_url = $upload_path.$image_full_name;
+            $image_url = $upload_path . $image_full_name;
             $success = $image_two->move($upload_path, $image_full_name);
 
             Product::findOrFail($id)->update([
@@ -240,7 +252,7 @@ class ProductController extends Controller
                 'message' => 'Image Two Updated Successfully',
                 'alert-type' => 'success'
             );
-    
+
             return redirect()->route('all.product')->with($notification);
         };
 
@@ -248,9 +260,9 @@ class ProductController extends Controller
             unlink($old_three);
             $image_name = date('dmy_H_s_i');
             $ext = strtolower($image_three->getClientOriginalExtension());
-            $image_full_name = $image_name.'.'.$ext;
+            $image_full_name = $image_name . '.' . $ext;
             $upload_path = 'media/product/';
-            $image_url = $upload_path.$image_full_name;
+            $image_url = $upload_path . $image_full_name;
             $success = $image_three->move($upload_path, $image_full_name);
 
             Product::findOrFail($id)->update([
@@ -261,9 +273,8 @@ class ProductController extends Controller
                 'message' => 'Image Three Updated Successfully',
                 'alert-type' => 'success'
             );
-    
+
             return redirect()->route('all.product')->with($notification);
-        } 
+        }
     }
- 
 }

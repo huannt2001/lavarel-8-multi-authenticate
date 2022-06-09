@@ -6,21 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:admin');
     }
 
-    public function CategoryView() {
+    public function CategoryView()
+    {
         $categories = Category::all();
         return view('admin.category.category', compact('categories'));
     }
 
-    public function StoreCategory(Request $request) {
+    public function StoreCategory(Request $request)
+    {
         $validatedData = $request->validate([
             'category_name' => 'required|unique:categories|max:255',
         ]);
@@ -31,14 +34,15 @@ class CategoryController extends Controller
         ]);
 
         $notification = array(
-			'message' => 'Category Inserted Successfully',
-			'alert-type' => 'success'
-		);
+            'message' => 'Category Inserted Successfully',
+            'alert-type' => 'success'
+        );
 
         return redirect()->back()->with($notification);
     }
 
-    public function CategoryDelete($id) {
+    public function CategoryDelete($id)
+    {
         if (isset($id)) {
             Category::findOrFail($id)->delete();
             $notification = array(
@@ -55,7 +59,8 @@ class CategoryController extends Controller
         }
     }
 
-    public function CategoryEdit($id) {
+    public function CategoryEdit($id)
+    {
         if (isset($id)) {
             $category = Category::findOrFail($id);
             return view('admin.category.edit', compact('category'));
@@ -68,7 +73,8 @@ class CategoryController extends Controller
         }
     }
 
-    public function CategoryUpdate(Request $request, $id) {
+    public function CategoryUpdate(Request $request, $id)
+    {
         $validateData = $request->validate([
             'category_name' => 'required|max:255',
         ]);

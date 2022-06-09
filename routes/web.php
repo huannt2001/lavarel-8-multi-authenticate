@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\Category\SubCategoryController;
 use App\Http\Controllers\Backend\Category\CouponController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PostController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Frontend\FrontProductController;
 use App\Http\Controllers\PaymentController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,16 +35,15 @@ Route::get('/email/verify', function () {
 })->middleware('auth')->name('verification.notice');
 
 
-Route::group(['prefix'=> 'admin', 'middleware'=>['admin:admin']], function(){
-	Route::get('/login', [AdminController::class, 'loginForm']);
-	Route::post('/login',[AdminController::class, 'store'])->name('admin.login');
+Route::group(['prefix' => 'admin', 'middleware' => ['admin:admin']], function () {
+    Route::get('/login', [AdminController::class, 'loginForm']);
+    Route::post('/login', [AdminController::class, 'store'])->name('admin.login');
 });
 
 Route::middleware(['auth:sanctum,admin', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('admin/dashboard', function () {
         return view('admin.home');
     })->name('dashboard');
-    
 });
 
 Route::get('/admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
@@ -67,9 +68,9 @@ Route::post('/update/change/password', [AdminProfileController::class, 'AdminUpd
 // User ALL Routes
 
 Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
-	$id = Auth::user()->id;
+    $id = Auth::user()->id;
     $user = User::find($id);
-    return view('frontend.profile.user_profile',compact('user'));
+    return view('frontend.profile.user_profile', compact('user'));
 });
 
 Route::get('/', [IndexController::class, 'index'])->name('user.home');
@@ -92,8 +93,8 @@ Route::prefix('admin/category')->group(function () {
     Route::get('/delete/{id}', [CategoryController::class, 'CategoryDelete'])->name('category.delete');
     Route::get('/edit/{id}', [CategoryController::class, 'CategoryEdit'])->name('category.edit');
     Route::post('/update/{id}', [CategoryController::class, 'CategoryUpdate'])->name('category.update');
-    
-    
+
+
     // Admin SubCategory  All Routes
     Route::get('/sub/view', [SubCategoryController::class, 'SubCategoryView'])->name('sub.category');
     Route::post('/sub/store', [SubCategoryController::class, 'StoreSubCategory'])->name('store.subcategory');
@@ -139,10 +140,27 @@ Route::prefix('admin/product')->group(function () {
     Route::get('/inactive/{id}', [ProductController::class, 'InactiveProduct'])->name('inactive.product');
     Route::get('/active/{id}', [ProductController::class, 'ActiveProduct'])->name('active.product');
     Route::get('/delete/{id}', [ProductController::class, 'DeleteProduct'])->name('product.delete');
-    Route::get('/view/{id}', [ProductController::class, 'ViewProduct'])->name('view.product');
+    Route::get('/view/{id}', [ProductController::class, 'ViewProduct'])->name('admin.view.product');
     Route::get('/edit/{id}', [ProductController::class, 'EditProduct'])->name('edit.product');
     Route::post('/update/withoutphoto/{id}', [ProductController::class, 'UpdateProductWithoutPhoto'])->name('update.withoutphoto.product');
     Route::post('/update/photo/{id}', [ProductController::class, 'UpdateProductPhoto'])->name('update.photo.product');
+});
+
+// Admin Order  All Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/order/new', [OrderController::class, 'NewOrder'])->name('admin.new.order');
+    Route::get('/order/view/{id}', [OrderController::class, 'ViewOrder'])->name('view.order');
+
+    Route::get('/payment/accept/{id}', [OrderController::class, 'PaymentAccept'])->name('admin.payment.accept');
+    Route::get('/payment/cancel/{id}', [OrderController::class, 'PaymentCancel'])->name('admin.payment.cancel');
+
+    Route::get('view/payment/accept', [OrderController::class, 'ViewAllAcceptPayment'])->name('view.accept.payment');
+    Route::get('/view/order/cancel', [OrderController::class, 'ViewAllCancelOrder'])->name('view.cancel.order');
+    Route::get('/view/payment/process', [OrderController::class, 'ViewAllProcessPayment'])->name('view.process.payment');
+    Route::get('/view/payment/success', [OrderController::class, 'ViewAllSuccessPayment'])->name('view.success.payment');
+
+    Route::get('/process/delivery/{id}', [OrderController::class, 'ProcessDelivery'])->name('admin.process.delivery');
+    Route::get('/success/delivery/{id}', [OrderController::class, 'DeliveryDone'])->name('admin.delivery.done');
 });
 
 
@@ -172,46 +190,47 @@ Route::get('/add-to-wishlist/{id}', [WishlistController::class, 'AddToWishlist']
 
 //     // Wishlist page
 //     Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
-    
+
 //     Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
-    
+
 //     Route::get('/wishlist-remove/{id}', [WishlistController::class, 'RemoveWishlistProduct']);
-    
+
 //     Route::post('/stripe/order', [StripeController::class, 'StripeOrder'])->name('stripe.order');
-    
+
 //     Route::post('/cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
-    
+
 //     Route::get('/my/orders', [AllUserController::class, 'MyOrders'])->name('my.orders');
-    
+
 //     Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
-    
+
 //     Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
-    
+
 //     Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
-    
+
 //     Route::get('/return/order/list', [AllUserController::class, 'ReturnOrderList'])->name('return.order.list');
-    
+
 //     Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.orders');
-        
-    
+
+
 //     /// Order Traking Route 
 //     Route::post('/order/tracking', [AllUserController::class, 'OrderTraking'])->name('order.tracking');    
-    
+
 //     });
 
 // Add to Cart
-Route::prefix('cart')->group(function () { 
+Route::prefix('cart')->group(function () {
     Route::get('/add/{id}', [CartController::class, 'AddToCart'])->name('add.cart'); // dùng để add cart nhanh khi chưa có quick view
     Route::get('/check', [CartController::class, 'Check']);
     Route::get('/view', [CartController::class, 'ShowCart'])->name('show.cart');
     Route::get('/remove/{rowId}', [CartController::class, 'RemoveCart'])->name('remove.cart');
     Route::post('/update/{rowId}', [CartController::class, 'UpdateCart'])->name('update.cart');
-    Route::get('/quick-view/{id}', [CartController::class, 'Viewproduct'])->name('view.product');// show modal quick view
-    Route::post('/quick/add', [CartController::class, 'InsertCart'])->name('insert.into.cart');// Thêm sản phẩm vào cart khi người dùng click Quick View
+    Route::get('/quick-view/{id}', [CartController::class, 'Viewproduct'])->name('view.product'); // show modal quick view
+    Route::post('/quick/add', [CartController::class, 'InsertCart'])->name('insert.into.cart'); // Thêm sản phẩm vào cart khi người dùng click Quick View
     Route::get('user/checkout', [CartController::class, 'Checkout'])->name('user.checkout');
 });
 
 Route::get('user/wishlist', [WishlistController::class, 'wishlist'])->name('user.wishlist');
+Route::get('user/view/detail/order/{id}', [IndexController::class, 'DetailOrder'])->name('user.view.detail.order');
 
 // Frontend routes
 Route::get('product/details/{id}/{product_name}', [FrontProductController::class, 'ProductView']);

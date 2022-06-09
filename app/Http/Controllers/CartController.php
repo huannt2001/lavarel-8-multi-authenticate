@@ -8,13 +8,14 @@ use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Admin\Coupon;
 use Illuminate\Support\Facades\Session;
-use DB;
-use Auth;
-use Cart;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
-    public function AddToCart($id) {
+    public function AddToCart($id)
+    {
         $product = Product::where('id', $id)->first();
 
         if (!$product->discount_price) {
@@ -34,7 +35,6 @@ class CartController extends Controller
             return response()->json([
                 'success' => 'Product Added on Your Cart'
             ]);
-
         } else {
             Cart::add([
                 'id' => $product->id,
@@ -51,22 +51,25 @@ class CartController extends Controller
 
             return response()->json([
                 'success' => 'Product Added on Your Cart'
-           ]);
+            ]);
         }
     }
 
-    public function Check() {
+    public function Check()
+    {
         $content = Cart::content();
 
         return response()->json($content);
     }
 
-    public function ShowCart() {
+    public function ShowCart()
+    {
         $carts = Cart::content();
         return view('frontend.product.cart', compact('carts'));
     }
 
-    public function RemoveCart($rowId) {
+    public function RemoveCart($rowId)
+    {
         Cart::remove($rowId);
         $notification = array(
             'message' => 'Product Remove from Cart Successfully',
@@ -75,7 +78,8 @@ class CartController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function UpdateCart(Request $request, $rowId) {
+    public function UpdateCart(Request $request, $rowId)
+    {
         $qty = $request->qty;
         Cart::update($rowId, $qty);
 
@@ -86,7 +90,8 @@ class CartController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function Viewproduct($id) {
+    public function Viewproduct($id)
+    {
         $product = Product::where('id', $id)->first();
 
         $category_name = $product->category->category_name;
@@ -99,7 +104,7 @@ class CartController extends Controller
 
         $size = $product->product_size;
         $product_size = explode(',', $size);
-        
+
         return response()->json([
             'product' => $product,
             'size' => $product_size,
@@ -110,7 +115,8 @@ class CartController extends Controller
         ]);
     }
 
-    public function InsertCart(Request $request) {
+    public function InsertCart(Request $request)
+    {
         $id = $request->product_id;
         $product = Product::where('id', $id)->first();
 
@@ -133,7 +139,6 @@ class CartController extends Controller
                 'alert-type' => 'success',
             );
             return redirect()->back()->with($notification);
-
         } else {
             Cart::add([
                 'id' => $product->id,
@@ -156,7 +161,8 @@ class CartController extends Controller
         }
     }
 
-    public function Checkout() {
+    public function Checkout()
+    {
         if (Auth::check()) {
             $setting = Setting::first();
             $carts = Cart::content();
@@ -170,9 +176,10 @@ class CartController extends Controller
         }
     }
 
-    public function CouponApply(Request $request) {
+    public function CouponApply(Request $request)
+    {
         $coupon = Coupon::where('coupon', $request->coupon)->first();
-        
+
         if ($coupon) {
             Session::put('coupon', [
                 'coupon_name' => $coupon->coupon,
@@ -194,7 +201,8 @@ class CartController extends Controller
         }
     }
 
-    public function CouponRemove() {
+    public function CouponRemove()
+    {
         Session::forget('coupon');
         $notification = array(
             'message' => 'Coupon Removed Successfully',
@@ -203,10 +211,10 @@ class CartController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function PaymentPage() {
+    public function PaymentPage()
+    {
         $setting = Setting::first();
         $carts = Cart::content();
         return view('frontend.payment.payment', compact('carts', 'setting'));
     }
-    
 }

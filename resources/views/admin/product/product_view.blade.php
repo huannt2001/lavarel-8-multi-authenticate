@@ -51,8 +51,8 @@
                                             title="Edit"><i class="fa fa-edit"></i></a>
                                         <a href="{{ route('product.delete', $item->id) }}" class="btn btn-sm btn-danger"
                                             id="delete" title="Delete"><i class="fa fa-trash"></i></a>
-                                        <a href="{{ route('view.product', $item->id) }}" class="btn btn-sm btn-warning"
-                                            title="Show"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('admin.view.product', $item->id) }}"
+                                            class="btn btn-sm btn-warning" title="Show"><i class="fa fa-eye"></i></a>
 
                                         @if ($item->status == 1)
                                             <a href="{{ route('inactive.product', $item->id) }}"
