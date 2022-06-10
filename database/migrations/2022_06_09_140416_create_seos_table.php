@@ -15,6 +15,12 @@ class CreateSeosTable extends Migration
     {
         Schema::create('seos', function (Blueprint $table) {
             $table->id();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_author')->nullable();
+            $table->string('meta_tag')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('google_analytics')->nullable();
+            $table->text('bing_analytics')->nullable();
             $table->timestamps();
         });
     }

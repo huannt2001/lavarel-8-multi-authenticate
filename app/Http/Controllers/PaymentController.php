@@ -73,6 +73,7 @@ class PaymentController extends Controller
             'shipping' => $request->shipping,
             'vat' => $request->vat,
             'total' => $request->total,
+            'status_code' => mt_rand(100000, 999999),
             'status' => 0,
             'date' => date('d-m-y'),
             'month' => date('F'),

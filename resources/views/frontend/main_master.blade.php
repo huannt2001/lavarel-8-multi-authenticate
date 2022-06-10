@@ -51,6 +51,17 @@
                                     href="mailto:fastsales@gmail.com">fastsales@gmail.com</a>
                             </div>
                             <div class="top_bar_content ml-auto">
+                                @auth
+                                    <div class="top_bar_menu">
+                                        <ul class="standard_dropdown top_bar_dropdown">
+                                            <li>
+                                                <a href="" data-toggle="modal" data-target="#exampleModal">
+                                                    My Order Tracking
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endauth
                                 <div class="top_bar_menu">
                                     <ul class="standard_dropdown top_bar_dropdown">
                                         <li>
@@ -301,6 +312,32 @@
                     </div>
                 </div>
             </div>
+    </div>
+
+    <!-- Order Tracking -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Your Status Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('order.tracking') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="">Status Code</label>
+                            <input type="text" name="code" id="" required class="form-control"
+                                placeholder="Your Order Status Code">
+                        </div>
+                        <button class="btn btn-danger" type="submit">Track Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ asset('frontend/js/jquery-3.3.1.min.js') }}"></script>

@@ -17,6 +17,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Frontend\FrontProductController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SeoController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -254,3 +255,10 @@ Route::post('/user/strip/charge', [PaymentController::class, 'StripeCharge'])->n
 
 Route::get('/subcategory/{id}', [FrontProductController::class, 'ProductSubCate'])->name('view.subcategory');
 Route::get('/category/{id}', [FrontProductController::class, 'ProductCate'])->name('view.category');
+
+// SEO setting
+Route::get('admin/seo', [SeoController::class, 'Seo'])->name('admin.seo');
+Route::post('admin/update/seo/{id}', [SeoController::class, 'UpdateSeo'])->name('update.seo');
+
+// Order Tracking Route
+Route::post('order/tracking', [HomeController::class, 'OrderTracking'])->name('order.tracking');
