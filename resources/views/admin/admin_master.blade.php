@@ -161,6 +161,33 @@
                 </li>
             </ul>
 
+            <a href="#" class="sl-menu-link">
+                <div class="sl-menu-item">
+                    <i class="menu-item-icon icon ion-ios-filing-outline tx-24"></i>
+                    <span class="menu-item-label">Reports</span>
+                    <i class="menu-item-arrow fa fa-angle-down"></i>
+                </div><!-- menu-item -->
+            </a><!-- sl-menu-link -->
+            <ul class="sl-menu-sub nav flex-column">
+                <li class="nav-item"><a href="{{ route('report.order.today') }}" class="nav-link">Today
+                        Order</a>
+                </li>
+                <li class="nav-item"><a href="{{ route('report.delivery.today') }}"
+                        class="nav-link">Today
+                        Delivery</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('report.this.month') }}" class="nav-link">
+                        This Month
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('search.report') }}" class="nav-link">
+                        Search Report
+                    </a>
+                </li>
+            </ul>
+
         </div><!-- sl-sideleft-menu -->
 
         <br>

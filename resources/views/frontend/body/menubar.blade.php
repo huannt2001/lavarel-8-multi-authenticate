@@ -1,5 +1,5 @@
 @php
-$categories = DB::table('categories')->get();
+    $categories = DB::table('categories')->get();
 @endphp
 
 <nav class="main_nav">
@@ -45,45 +45,10 @@ $categories = DB::table('categories')->get();
 
                     <!-- Main Nav Menu -->
 
-                    <div class="main_nav_menu ml-auto">
+                    <div class="main_nav_menu ml-5">
                         <ul class="standard_dropdown main_nav_dropdown">
-                            <li><a href="#">Home<i class="fas fa-chevron-down"></i></a></li>
-                            <li class="hassubs">
-                                <a href="#">Super Deals<i class="fas fa-chevron-down"></i></a>
-                                <ul>
-                                    <li>
-                                        <a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                        <ul>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                            </li>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                            </li>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                </ul>
-                            </li>
-                            <li class="hassubs">
-                                <a href="#">Featured Brands<i class="fas fa-chevron-down"></i></a>
-                                <ul>
-                                    <li>
-                                        <a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                        <ul>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
-                                            </li>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                            <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                    <li><a href="#">Menu Item<i class="fas fa-chevron-down"></i></a></li>
-                                </ul>
-                            </li>
+                            <li><a href="{{ route('user.home') }}" class="ml-5">Home<i
+                                        class="fas fa-chevron-down"></i></a></li>
                             <li class="hassubs">
                                 <a href="#">Pages<i class="fas fa-chevron-down"></i></a>
                                 <ul>
@@ -100,7 +65,7 @@ $categories = DB::table('categories')->get();
                                 </ul>
                             </li>
                             <li><a href="{{ route('blog.post') }}">Blog<i class="fas fa-chevron-down"></i></a></li>
-                            <li><a href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
+                            <li><a href="{{ route('contact') }}">Contact<i class="fas fa-chevron-down"></i></a></li>
                         </ul>
                     </div>
 
@@ -203,12 +168,13 @@ $categories = DB::table('categories')->get();
 
                     <div class="menu_contact">
                         <div class="menu_contact_item">
-                            <div class="menu_contact_icon"><img src="/frontend/images/phone_white.png" alt=""></div>+38
+                            <div class="menu_contact_icon"><img src="/frontend/images/phone_white.png"
+                                    alt=""></div>+38
                             068 005 3570
                         </div>
                         <div class="menu_contact_item">
-                            <div class="menu_contact_icon"><img src="/frontend/images/mail_white.png" alt=""></div><a
-                                href="mailto:fastsales@gmail.com">fastsales@gmail.com</a>
+                            <div class="menu_contact_icon"><img src="/frontend/images/mail_white.png" alt="">
+                            </div><a href="mailto:fastsales@gmail.com">fastsales@gmail.com</a>
                         </div>
                     </div>
                 </div>

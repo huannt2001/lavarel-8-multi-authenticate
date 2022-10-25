@@ -25,7 +25,9 @@ $slider = DB::table('products')
                             @endif
                         </div>
                         <div class="banner_product_name">{{ $slider->brand_name }}</div>
-                        <div class="button banner_button"><a href="#">Shop Now</a></div>
+                        <div class="button banner_button">
+                            <a href="{{ url('product/details/' . $slider->id . '/' . Str::slug($slider->product_name)) }}">Shop Now</a>
+                        </div>
                     </div>
                 </div>
         </div>

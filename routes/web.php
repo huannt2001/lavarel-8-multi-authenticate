@@ -11,10 +11,12 @@ use App\Http\Controllers\Backend\Category\CouponController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\ReportController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Frontend\FrontProductController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SeoController;
@@ -252,7 +254,6 @@ Route::get('/language/vietnam', [BlogController::class, 'Vietnam'])->name('langu
 Route::get('/payment', [CartController::class, 'PaymentPage'])->name('payment.step');
 Route::post('/user/payment/process', [PaymentController::class, 'PaymenProcess'])->name('payment.process');
 Route::post('/user/strip/charge', [PaymentController::class, 'StripeCharge'])->name('stripe.charge');
-
 Route::get('/subcategory/{id}', [FrontProductController::class, 'ProductSubCate'])->name('view.subcategory');
 Route::get('/category/{id}', [FrontProductController::class, 'ProductCate'])->name('view.category');
 
@@ -260,5 +261,15 @@ Route::get('/category/{id}', [FrontProductController::class, 'ProductCate'])->na
 Route::get('admin/seo', [SeoController::class, 'Seo'])->name('admin.seo');
 Route::post('admin/update/seo/{id}', [SeoController::class, 'UpdateSeo'])->name('update.seo');
 
+// Contact
+Route::get('contact', [ContactController::class, 'contactInfo'])->name('contact');
+
+
 // Order Tracking Route
 Route::post('order/tracking', [HomeController::class, 'OrderTracking'])->name('order.tracking');
+
+// Report Route
+Route::get('admin/today/report-order', [ReportController::class, 'TodayOrder'])->name('report.order.today');
+Route::get('admin/today/report-delivery', [ReportController::class, 'TodayDelivery'])->name('report.delivery.today');
+Route::get('admin/this/month', [ReportController::class, 'ThisMonth'])->name('report.this.month');
+Route::get('admin/search/report', [ReportController::class, 'SearchReport'])->name('search.report');
